@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Montserrat, Fredoka } from "next/font/google";
 import "./globals.css";
-
+import { ToastContainer } from "react-toastify";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
+  subsets: ["latin"],
+});
+const fredoka = Fredoka({
+  variable: "--font-fredoka",
   subsets: ["latin"],
 });
 
@@ -20,8 +24,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${montserrat.variable} antialiased`}>
+      <body
+        className={`${montserrat.variable} ${fredoka.variable} antialiased`}
+      >
         {children}
+        <ToastContainer hideProgressBar />
       </body>
     </html>
   );
