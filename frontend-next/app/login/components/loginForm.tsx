@@ -1,13 +1,16 @@
 "use client";
 
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { startTransition, useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { z } from "@/lib/zod";
+import { loginAction } from "@/app/auth/actions";
+import { useRouter } from "next/navigation";
+import { toast } from "@/components/toast";
+import { UserRoles } from "@/types/userType";
 
 const schema = z.object({
   email: z.string().email("Informe um e-mail válido"),
@@ -15,9 +18,13 @@ const schema = z.object({
 });
 
 type FormValues = z.infer<typeof schema>;
-
+const ROLE_REDIRECT: Record<UserRoles, string> = {
+  ADMIN: "/admin/dashboard",
+  LEITOR: "/reader/books",
+};
 export default function LoginForm() {
   const [submitting, setSubmitting] = useState(false);
+  const router = useRouter();
 
   const {
     register,
@@ -29,14 +36,27 @@ export default function LoginForm() {
     mode: "onTouched",
   });
 
-  const onSubmit = async (values: FormValues) => {
-    setSubmitting(true);
-    try {
-      console.log("LOGIN:", values); // <-- por ora só loga
-      // aqui no futuro: chamada à sua API
-    } finally {
-      setSubmitting(false);
-    }
+    const onSubmit = (vals: FormValues) => {
+    startTransition(async () => {
+      const result = await loginAction({
+        email: vals.email,
+        senha: vals.password,
+      });
+
+      if (result.success) {
+        toast.success(result.message);
+
+        const role = result.user?.role as UserRoles | undefined;
+
+        const target =
+          (role && ROLE_REDIRECT[role]) 
+          || "/";
+
+        router.push(target);
+      } else {
+        toast.error("Erro ao autenticar o usuário");
+      }
+    });
   };
 
   return (

@@ -2,8 +2,6 @@ package biblioteca.controller;
 
 import java.util.List;
 
-import biblioteca.services.UsuarioService;
-import biblioteca.utils.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import biblioteca.jpa.UsuarioRepository;
 import biblioteca.model.Usuario;
+import biblioteca.services.UsuarioService;
+import biblioteca.utils.LoginRequest;
 import jakarta.validation.Valid;
 
 @RestController

@@ -1,0 +1,96 @@
+'use server';
+
+import { UsuarioType } from '@/types/userType';
+import { cookies } from 'next/headers';
+
+
+const BASE = process.env.BACKEND!;
+if (!BASE) throw new Error('BACKEND ausente no .env.local');
+
+type LoginPayload = { email: string; senha: string };
+type SignupPayload = { nome: string; email: string; senha: string; role: 'ADMIN' | 'LEITOR' };
+
+async function api<T = any>(path: string, init?: RequestInit): Promise<T> {
+  const res = await fetch(`${BASE}${path}`, {
+    ...init,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(init?.headers || {}),
+    },
+    // se seu backend usar cookie de sessão, ligue:
+    // credentials: 'include',
+    cache: 'no-store',
+  });
+
+  const ct = res.headers.get('content-type');
+  const isJson = ct?.includes('application/json');
+  const data = isJson ? await res.json().catch(() => null) : null;
+
+  if (!res.ok) {
+    const msg = (data && (data.message || data.error)) || `HTTP ${res.status}`;
+    throw new Error(msg);
+  }
+
+  return data as T;
+}
+
+
+
+export async function loginAction(values: LoginPayload) {
+  try {
+    const user = await api<UsuarioType>("/api/usuarios/login", {
+      method: "POST",
+      body: JSON.stringify(values),
+    });
+
+    const cookieStore = await cookies();
+    cookieStore.set("user_role", user.role, {
+      sameSite: "lax",
+      path: "/",
+    });
+
+    return {
+      success: true as const,
+      message: "Usuário autenticado com sucesso",
+      user,
+    };
+  } catch (e: any) {
+    return {
+      success: false as const,
+      message: e?.message ?? "Erro ao autenticar o usuário",
+      user: null,
+    };
+  }
+}
+
+
+
+
+export async function signupAction(values: SignupPayload) {
+  try {
+    
+    const user = await api<UsuarioType>("/api/usuarios", {
+      method: "POST",
+      body: JSON.stringify(values),
+    });
+
+    const cookieStore = await cookies();
+    cookieStore.set("user_role", user.role, {
+      sameSite: "lax",
+      path: "/",
+    });
+
+    return {
+      success: true as const,
+      message: "Usuário cadastrado com sucesso",
+      user,
+    };
+  } catch (e: any) {
+    return {
+      success: false as const,
+      message: e?.message ?? "Erro ao cadastrar o usuário",
+      user: null,
+    };
+  }
+}
+

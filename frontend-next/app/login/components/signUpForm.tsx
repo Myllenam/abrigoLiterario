@@ -14,6 +14,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { UserRoles } from "@/types/userType";
+import { startTransition } from "react";
+import { signupAction } from "@/app/auth/actions";
+import { toast } from "@/components/toast";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
   nome: z.string().min(2, "Informe um nome válido"),
@@ -26,6 +30,7 @@ type SignUpValues = z.infer<typeof schema>;
 
 export default function SignUpForm() {
   const {
+    reset,
     register,
     handleSubmit,
     control,
@@ -40,10 +45,24 @@ export default function SignUpForm() {
     },
     mode: "onTouched",
   });
+  const router = useRouter();
+  const onSubmit = (vals: SignUpValues) => {
+    startTransition(async () => {
+      const result = await signupAction({
+        nome: vals.nome,
+        email: vals.email,
+        senha: vals.senha,
+        role: vals.role as UserRoles,
+      });
 
-  const onSubmit = (values: SignUpValues) => {
-    console.log("SIGNUP:", values);
-    // futuro: chamada da sua API
+      if (result.success) {
+        toast.success(result.message);
+        reset();
+        router.push("/login");
+      } else {
+        toast.error(result.message ?? "Erro ao cadastrar o usuário");
+      }
+    });
   };
 
   return (
@@ -52,7 +71,6 @@ export default function SignUpForm() {
       className="w-full max-w-[380px] space-y-4"
       noValidate
     >
-
       <div>
         <label htmlFor="name" className="block mb-1 text-sm font-medium">
           Nome

@@ -58,7 +58,7 @@ const toast = {
             {
                 position: 'bottom-right',
                 className:
-                    '!bg-surface-static-success-default !text-default m-0 p-5 items-center',
+                    '!bg-green-500 !text-default m-0 p-5 items-center',
                 hideProgressBar: true,
                 closeButton: false,
                 autoClose: 5000
@@ -73,7 +73,7 @@ const toast = {
             {
                 position: 'bottom-right',
                 className:
-                    '!bg-surface-static-info-default !text-default m-0 p-5 items-center',
+                    '!bg-white !text-default m-0 p-5 items-center',
                 hideProgressBar: true,
                 closeButton: false,
                 autoClose: 5000
@@ -88,7 +88,7 @@ const toast = {
             {
                 position: 'bottom-right',
                 className:
-                    '!bg-surface-static-warning-default !text-default m-0 p-5 items-center',
+                    '!bg-surface-yellow-500 !text-default m-0 p-5 items-center',
                 hideProgressBar: true,
                 closeButton: false,
                 autoClose: 5000
@@ -110,8 +110,7 @@ const toast = {
             ),
             {
                 position: 'bottom-right',
-                className: `!bg-surface-static-danger-default !text-default p-5 m-0 h-[${link ? '100px' : '48px'}] items-center`,
-                // bodyClassName: '!bg-surface-static-danger w-full',
+                className: `!bg-red-500 !text-default p-5 m-0 h-[${link ? '100px' : '48px'}] items-center`,
                 hideProgressBar: true,
                 closeButton: false,
                 autoClose: autoClose || false
