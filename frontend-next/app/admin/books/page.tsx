@@ -1,7 +1,8 @@
+
 const Page = () => {
   return (
     <div className="">
-      LIVROS LEITOR
+      BOOKS admin
     </div>
   );
 };

@@ -1,14 +1,28 @@
+import { AppHeader } from "@/components/appHeader";
+import { AppMenu, MenuItem } from "@/components/appMenu";
 import type { ReactNode } from "react";
+import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 
-const Layout = async ({ children }: { children: ReactNode }) => {
+const adminMenu: MenuItem[] = [
+  {
+    label: "Dashboard",
+    href: "/admin/dashboard",
+    icon: <SpaceDashboardIcon />,
+  },
+  { label: "Livros", href: "/admin/books", icon: <LibraryBooksIcon /> },
+];
+
+export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-[100vh] w-full flex-col bg-offWhite">
-      oi
-      <main className="w-full flex-1 overflow-y-auto pr-[30px]">
-        {children}
-      </main>
+    <div className="min-h-screen flex flex-col bg-[#F2F2F2]">
+      <AppHeader />
+
+      <div className="flex flex-1 flex-col md:flex-row">
+        <AppMenu items={adminMenu} />
+
+        <main className="flex-1 p-4 sm:p-6">{children}</main>
+      </div>
     </div>
   );
-};
-
-export default Layout;
+}
