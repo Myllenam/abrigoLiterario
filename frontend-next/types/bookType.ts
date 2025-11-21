@@ -12,7 +12,7 @@ export type BookType = {
   id: number;
   titulo: string;
   descricao?: string;
-  capaUrl?: string;
+  urlCapa?: string;
   autor?: Autor | null;
   categoria?: Categoria | null;
 };
