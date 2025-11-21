@@ -1,29 +1,34 @@
-'use server';
+"use server";
 
-import { UsuarioType } from '@/types/userType';
-import { cookies } from 'next/headers';
-
+import { Autor, BookType, Categoria, LivroFilters } from "@/types/bookType";
+import { UsuarioType } from "@/types/userType";
+import { cookies } from "next/headers";
 
 const BASE = process.env.BACKEND!;
-if (!BASE) throw new Error('BACKEND ausente no .env.local');
+if (!BASE) throw new Error("BACKEND ausente no .env.local");
 
 type LoginPayload = { email: string; senha: string };
-type SignupPayload = { nome: string; email: string; senha: string; role: 'ADMIN' | 'LEITOR' };
+type SignupPayload = {
+  nome: string;
+  email: string;
+  senha: string;
+  role: "ADMIN" | "LEITOR";
+};
 
 async function api<T = any>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {
     ...init,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...(init?.headers || {}),
     },
     // se seu backend usar cookie de sessão, ligue:
     // credentials: 'include',
-    cache: 'no-store',
+    cache: "no-store",
   });
 
-  const ct = res.headers.get('content-type');
-  const isJson = ct?.includes('application/json');
+  const ct = res.headers.get("content-type");
+  const isJson = ct?.includes("application/json");
   const data = isJson ? await res.json().catch(() => null) : null;
 
   if (!res.ok) {
@@ -33,8 +38,6 @@ async function api<T = any>(path: string, init?: RequestInit): Promise<T> {
 
   return data as T;
 }
-
-
 
 export async function loginAction(values: LoginPayload) {
   try {
@@ -63,12 +66,8 @@ export async function loginAction(values: LoginPayload) {
   }
 }
 
-
-
-
 export async function signupAction(values: SignupPayload) {
   try {
-    
     const user = await api<UsuarioType>("/api/usuarios", {
       method: "POST",
       body: JSON.stringify(values),
@@ -94,3 +93,68 @@ export async function signupAction(values: SignupPayload) {
   }
 }
 
+export async function getCategoriasAction() {
+  try {
+    const data = await api<Categoria[]>("/api/categorias", {
+      method: "GET",
+    });
+
+    return {
+      success: true as const,
+      data,
+    };
+  } catch (e: any) {
+    return {
+      success: false as const,
+      data: [] as Categoria[],
+      message: e?.message ?? "Erro ao carregar categorias",
+    };
+  }
+}
+
+export async function getAutoresAction() {
+  try {
+    const data = await api<Autor[]>("/api/autores", {
+      method: "GET",
+    });
+
+    return {
+      success: true as const,
+      data,
+    };
+  } catch (e: any) {
+    return {
+      success: false as const,
+      data: [] as Autor[],
+      message: e?.message ?? "Erro ao carregar autores",
+    };
+  }
+}
+
+export async function getLivrosAction(filters: LivroFilters) {
+  try {
+    const params = new URLSearchParams();
+
+    if (filters.titulo) params.append("titulo", filters.titulo);
+    if (filters.autorId) params.append("autor", filters.autorId);
+    if (filters.categoriaId) params.append("categoria", filters.categoriaId);
+
+    const query = params.toString();
+    const q = query ? `?${query}` : "";
+
+    const data = await api<BookType[]>(`/api/livros${q}`, {
+      method: "GET",
+    });
+
+    return {
+      success: true as const,
+      data,
+    };
+  } catch (e: any) {
+    return {
+      success: false as const,
+      data: [] as BookType[],
+      message: e?.message ?? "Erro ao carregar livros",
+    };
+  }
+}
