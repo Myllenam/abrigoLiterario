@@ -15,11 +15,10 @@ function getPageTitle(pathname: string): string {
   const segments = pathname.split("/").filter(Boolean);
   const [section, page] = segments;
 
-
   if (section === "admin") {
     if (page === "dashboard") return "Dashboard do Admin";
-    if (page === "users") return "Gerenciar Usuários";
     if (page === "books") return "Gerenciar Livros";
+    if (page === "profile") return "Meu Perfil";
     return "Área Administrativa";
   }
 
@@ -29,7 +28,6 @@ function getPageTitle(pathname: string): string {
     if (page === "loans") return "Meus Empréstimos";
     return "Área do Leitor";
   }
-
 
   const last = segments[segments.length - 1];
   return last.charAt(0).toUpperCase() + last.slice(1).replace(/-/g, " ");

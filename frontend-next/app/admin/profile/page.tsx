@@ -38,45 +38,9 @@ type BorrowedBook = {
 };
 
 const mockUser: ProfileFormValues = {
-  nome: "Leitor Exemplo",
-  email: "leitor@abrigoliterario.com",
-  role: UserRoles.LEITOR,
-};
-
-const mockBorrowedBooks: BorrowedBook[] = [
-  {
-    id: 1,
-    titulo: "Orgulho e Preconceito",
-    autor: "Jane Austen",
-    dataDevolucao: "2025-12-10",
-    status: "EM_DIA",
-  },
-  {
-    id: 2,
-    titulo: "1984",
-    autor: "George Orwell",
-    dataDevolucao: "2025-11-30",
-    status: "ATRASADO",
-  },
-  {
-    id: 3,
-    titulo: "O Sol é para Todos",
-    autor: "Harper Lee",
-    dataDevolucao: "2025-12-20",
-    status: "DEVOLVIDO",
-  },
-];
-
-const statusLabel: Record<BorrowStatus, string> = {
-  EM_DIA: "Em dia",
-  ATRASADO: "Atrasado",
-  DEVOLVIDO: "Devolvido",
-};
-
-const statusClasses: Record<BorrowStatus, string> = {
-  EM_DIA: "bg-emerald-100 text-emerald-800 border-emerald-200",
-  ATRASADO: "bg-red-100 text-red-800 border-red-200",
-  DEVOLVIDO: "bg-slate-100 text-slate-700 border-slate-200",
+  nome: "Admin Exemplo",
+  email: "admin@abrigoliterario.com",
+  role: UserRoles.ADMIN,
 };
 
 const Page = () => {
@@ -185,11 +149,7 @@ const Page = () => {
                 control={control}
                 name="role"
                 render={({ field }) => (
-                  <Select
-                    value={field.value}
-                    onValueChange={field.onChange}
-                    disabled
-                  >
+                  <Select value={field.value} onValueChange={field.onChange} disabled>
                     <SelectTrigger className="h-9">
                       <SelectValue placeholder="Selecione" />
                     </SelectTrigger>
@@ -222,53 +182,6 @@ const Page = () => {
             </div>
           </form>
         </div>
-      </section>
-
-      <section className="rounded-2xl border border-background-login-two/20 bg-background-login p-4 sm:p-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
-          <div>
-            <h2 className="text-lg font-semibold">Meus empréstimos</h2>
-            <p className="text-xs text-background-login-two/70">
-              Visualize os livros alugados, prazos de devolução e status.
-            </p>
-          </div>
-        </div>
-
-        {mockBorrowedBooks.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            Você ainda não possui empréstimos ativos.
-          </p>
-        ) : (
-          <div className="space-y-3">
-            {mockBorrowedBooks.map((book) => (
-              <div
-                key={book.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-xl border border-background-login-two/20 bg-[#FBF8F4] px-3 py-3"
-              >
-                <div>
-                  <p className="text-sm font-medium">{book.titulo}</p>
-                  <p className="text-xs text-background-login-two/70">
-                    {book.autor}
-                  </p>
-                  <p className="mt-1 text-xs text-background-login-two/70">
-                    Devolução:{" "}
-                    <span className="font-medium">
-                      {new Date(book.dataDevolucao).toLocaleDateString("pt-BR")}
-                    </span>
-                  </p>
-                </div>
-
-                <span
-                  className={`inline-flex items-center justify-center rounded-full border px-3 py-1 text-xs font-medium ${
-                    statusClasses[book.status]
-                  }`}
-                >
-                  {statusLabel[book.status]}
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
       </section>
     </div>
   );

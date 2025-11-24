@@ -58,7 +58,7 @@ const toast = {
             {
                 position: 'bottom-right',
                 className:
-                    '!bg-green-500 !text-default m-0 p-5 items-center',
+                    '!bg-green-500 !text-white m-0 p-5 items-center',
                 hideProgressBar: true,
                 closeButton: false,
                 autoClose: 5000
@@ -110,7 +110,7 @@ const toast = {
             ),
             {
                 position: 'bottom-right',
-                className: `!bg-red-500 !text-default p-5 m-0 h-[${link ? '100px' : '48px'}] items-center`,
+                className: `!bg-red-500 !text-white p-5 m-0 h-[${link ? '100px' : '48px'}] items-center`,
                 hideProgressBar: true,
                 closeButton: false,
                 autoClose: autoClose || false

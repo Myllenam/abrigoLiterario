@@ -8,7 +8,7 @@ import type { ReactNode } from "react";
 export type MenuItem = {
   label: string;
   href: string;
-  icon?: ReactNode; // 👈 ícone opcional
+  icon?: ReactNode; 
 };
 
 type AppMenuProps = {

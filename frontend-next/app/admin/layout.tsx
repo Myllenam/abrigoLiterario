@@ -3,6 +3,7 @@ import { AppMenu, MenuItem } from "@/components/appMenu";
 import type { ReactNode } from "react";
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import RecentActorsIcon from "@mui/icons-material/RecentActors";
 
 const adminMenu: MenuItem[] = [
   {
@@ -11,6 +12,8 @@ const adminMenu: MenuItem[] = [
     icon: <SpaceDashboardIcon />,
   },
   { label: "Livros", href: "/admin/books", icon: <LibraryBooksIcon /> },
+    { label: "Perfil", href: "/admin/profile", icon: <RecentActorsIcon /> },
+
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
