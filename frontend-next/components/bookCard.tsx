@@ -15,6 +15,8 @@ type BookCardProps = {
   isAdmin?: boolean;
   onEdit?: () => void;
   onDelete?: () => void;
+  onBorrow?: () => void;
+  borrowing?: boolean;
 };
 
 export default function BookCard({
@@ -27,6 +29,8 @@ export default function BookCard({
   isAdmin = false,
   onEdit,
   onDelete,
+  borrowing,
+  onBorrow,
 }: BookCardProps) {
   return (
     <article
@@ -88,15 +92,51 @@ export default function BookCard({
         )}
       </div>
 
-      {onViewDetails && (
-        <button
-          type="button"
-          onClick={onViewDetails}
-          className="mt-2 inline-flex text-sm text-black underline underline-offset-4 hover:opacity-80"
-        >
-          Ver detalhes
-        </button>
-      )}
+      <div className="mt-4 flex flex-wrap gap-2 justify-between">
+        {onViewDetails && (
+          <button
+            type="button"
+            onClick={onViewDetails}
+            className="text-sm underline underline-offset-4 hover:opacity-80"
+          >
+            Ver detalhes
+          </button>
+        )}
+
+        {isAdmin ? (
+          <div className="flex gap-2">
+            {onEdit && (
+              <button
+                type="button"
+                onClick={onEdit}
+                className="text-xs px-2 py-1 rounded border border-background-login-two/40 hover:bg-background-login-two/10"
+              >
+                Editar
+              </button>
+            )}
+            {onDelete && (
+              <button
+                type="button"
+                onClick={onDelete}
+                className="text-xs px-2 py-1 rounded border border-red-400 text-red-600 hover:bg-red-50"
+              >
+                Remover
+              </button>
+            )}
+          </div>
+        ) : (
+          onBorrow && (
+            <button
+              type="button"
+              onClick={onBorrow}
+              className="ml-auto text-xs px-3 py-1 rounded-full border border-background-login-two/40 bg-background-login-two text-background-login hover:opacity-90 transition"
+              disabled={!!borrowing}
+            >
+              {borrowing ? "Registrando..." : "Pegar emprestado"}
+            </button>
+          )
+        )}
+      </div>
     </article>
   );
 }
