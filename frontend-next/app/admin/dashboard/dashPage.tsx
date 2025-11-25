@@ -1,5 +1,6 @@
 "use client";
 
+import { AdminDashboardData } from "@/types/dashboardType";
 import {
   PieChart,
   Pie,
@@ -9,48 +10,30 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const booksByCategory = [
-  { name: "Romance", value: 24 },
-  { name: "Fantasia", value: 18 },
-  { name: "Não-ficção", value: 12 },
-  { name: "Infantil", value: 10 },
-  { name: "Outros", value: 6 },
-];
-
 const COLORS = ["#F97373", "#FACC15", "#34D399", "#60A5FA", "#A855F7"];
 
-const DashPage = () => {
-  const totalBooks = 70;
-  const borrowedBooks = 28;
-  const availableBooks = totalBooks - borrowedBooks;
-  const totalUsers = 42;
-  const admins = 4;
-  const readers = totalUsers - admins;
-  const lateLoans = 5;
+type DashPageProps = {
+  data: AdminDashboardData;
+};
 
-  const upcomingReturns = [
-    {
-      id: 1,
-      titulo: "Orgulho e Preconceito",
-      leitor: "Ana Souza",
-      dataDevolucao: "10/12/2025",
-      status: "No prazo",
-    },
-    {
-      id: 2,
-      titulo: "O Hobbit",
-      leitor: "Carlos Lima",
-      dataDevolucao: "08/12/2025",
-      status: "Atrasado",
-    },
-    {
-      id: 3,
-      titulo: "Sapiens",
-      leitor: "Marina Costa",
-      dataDevolucao: "12/12/2025",
-      status: "No prazo",
-    },
-  ];
+const DashPage = ({ data }: DashPageProps) => {
+  const totalBooks = data.totalBooks;
+  const borrowedBooks = data.borrowedBooks;
+  const availableBooks = totalBooks - borrowedBooks;
+  const totalUsers = data.totalUsers;
+  const admins = data.admins;
+  const readers = totalUsers - admins;
+  const lateLoans = data.lateLoans;
+
+  const activeLoans = borrowedBooks;
+
+  const onTimeRate =
+    activeLoans > 0
+      ? Math.round(((activeLoans - lateLoans) / activeLoans) * 100)
+      : 100;
+
+  const avgLoansPerReader =
+    readers > 0 ? (activeLoans / readers).toFixed(1) : "0.0";
 
   return (
     <div className="flex flex-col gap-6">
@@ -116,7 +99,7 @@ const DashPage = () => {
             <ResponsiveContainer width="100%" height="100%">
               <PieChart margin={{ top: 0, right: 40, left: 0, bottom: 0 }}>
                 <Pie
-                  data={booksByCategory}
+                  data={data.booksByCategory}
                   dataKey="value"
                   nameKey="name"
                   cx="50%"
@@ -127,7 +110,7 @@ const DashPage = () => {
                     `${name} ${((percent as number) * 100).toFixed(0)}%`
                   }
                 >
-                  {booksByCategory.map((entry, index) => (
+                  {data.booksByCategory.map((entry, index) => (
                     <Cell
                       key={`cell-${entry.name}`}
                       fill={COLORS[index % COLORS.length]}
@@ -149,9 +132,9 @@ const DashPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4">
             <div className="rounded-xl border border-background-login-two/20 bg-background-login/40 p-3">
               <p className="text-xs text-background-login-two/70">
-                Novos leitores (último mês)
+                Leitores cadastrados
               </p>
-              <p className="mt-2 text-xl font-semibold">8</p>
+              <p className="mt-2 text-xl font-semibold">{data.readers}</p>
               <p className="mt-1 text-xs text-background-login-two/60">
                 Participação crescente nas atividades
               </p>
@@ -159,11 +142,11 @@ const DashPage = () => {
 
             <div className="rounded-xl border border-background-login-two/20 bg-background-login/40 p-3">
               <p className="text-xs text-background-login-two/70">
-                Empréstimos no mês
+                Empréstimos ativos
               </p>
-              <p className="mt-2 text-xl font-semibold">32</p>
+              <p className="mt-2 text-xl font-semibold">{activeLoans}</p>
               <p className="mt-1 text-xs text-background-login-two/60">
-                Média de 1,3 livros por leitor ativo
+                Média de {avgLoansPerReader} livros por leitor
               </p>
             </div>
 
@@ -171,7 +154,10 @@ const DashPage = () => {
               <p className="text-xs text-background-login-two/70">
                 Taxa de devolução em dia
               </p>
-              <p className="mt-2 text-xl font-semibold">83%</p>
+              <p className="mt-2 text-xl font-semibold">
+                {" "}
+                {activeLoans > 0 ? `${onTimeRate}%` : "—"}
+              </p>
               <p className="mt-1 text-xs text-background-login-two/60">
                 Acompanhando os atrasos de perto
               </p>
@@ -195,14 +181,19 @@ const DashPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {upcomingReturns.map((item) => (
+                  {data.upcomingReturns.map((item) => (
                     <tr
                       key={item.id}
                       className="border-t border-background-login-two/10"
                     >
                       <td className="px-3 py-2">{item.titulo}</td>
                       <td className="px-3 py-2">{item.leitor}</td>
-                      <td className="px-3 py-2">{item.dataDevolucao}</td>
+                      <td className="px-3 py-2">
+                        {" "}
+                        {new Date(item.dataDevolucao).toLocaleDateString(
+                          "pt-BR"
+                        )}
+                      </td>
                       <td className="px-3 py-2">
                         <span
                           className={
@@ -216,7 +207,7 @@ const DashPage = () => {
                       </td>
                     </tr>
                   ))}
-                  {upcomingReturns.length === 0 && (
+                  {data.upcomingReturns.length === 0 && (
                     <tr>
                       <td
                         colSpan={4}

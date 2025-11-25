@@ -1,6 +1,7 @@
 "use server";
 
 import { Autor, BookType, Categoria, LivroFilters } from "@/types/bookType";
+import { AdminDashboardData } from "@/types/dashboardType";
 import { UsuarioType } from "@/types/userType";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -437,6 +438,25 @@ export async function getEmprestimosCurrentUserAction() {
       success: false as const,
       data: [] as LoanType[],
       message: e?.message ?? "Erro ao carregar empréstimos",
+    };
+  }
+}
+
+export async function getAdminDashboardAction() {
+  try {
+    const data = await api<AdminDashboardData>("/api/dashboard/admin", {
+      method: "GET",
+    });
+
+    return {
+      success: true as const,
+      data,
+    };
+  } catch (e: any) {
+    return {
+      success: false as const,
+      data: null as AdminDashboardData | null,
+      message: e?.message ?? "Erro ao carregar dashboard",
     };
   }
 }

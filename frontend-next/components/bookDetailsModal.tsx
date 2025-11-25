@@ -104,9 +104,16 @@ export default function BookDetailsModal({ open, book, onClose }: Props) {
 
             <div className="md:col-span-2">
               <h3 className="text-base sm:text-lg font-medium">Descrição</h3>
-              <p className="mt-2 text-sm leading-relaxed text-background-login-two/80">
-                {book.description ?? "Sem descrição disponível."}
-              </p>
+              <div
+                className="
+                    mt-2 text-sm leading-relaxed text-background-login-two/80
+                    h-32 sm:h-40
+                    overflow-y-auto
+                    pr-1
+                  "
+              >
+                <p>{book.description ?? "Sem descrição disponível."}</p>
+              </div>
 
               <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                 <div className="rounded-lg border border-background-login-two/30 p-3">

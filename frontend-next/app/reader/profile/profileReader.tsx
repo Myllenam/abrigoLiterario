@@ -143,7 +143,6 @@ export const ReaderProfileClient = ({
             onSubmit={handleSubmit(onSubmit)}
             className="grid grid-cols-1 sm:grid-cols-2 gap-4"
           >
-            {/* Nome */}
             <div className="flex flex-col gap-1 sm:col-span-2">
               <label
                 htmlFor="nome"
