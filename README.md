@@ -5,6 +5,9 @@ O projeto **Abrigo Literário** consiste no desenvolvimento de uma aplicação w
 O objetivo principal é criar um sistema funcional que permita a gestão eficiente do acervo literário e dos usuários da biblioteca. O sistema também busca promover o acesso à leitura, facilitando o contato entre leitores e o acervo disponível.
 
 # Tecnologias Utilizadas
+
+---
+
 ## Frontend
 • Next.js 15 — Framework React para construção de interfaces modernas com Server Components e Server Actions. • TypeScript — Tipagem estática garantindo maior segurança e escalabilidade. • Tailwind CSS — Framework CSS utilitário para estilização rápida e consistente. • Shadcn UI — Biblioteca de componentes acessíveis, tipados e altamente customizáveis. • React Hook Form — Gerenciamento de formulários com alta performance. • Zod — Validação de dados integrada aos formulários.
 
@@ -21,8 +24,10 @@ O objetivo principal é criar um sistema funcional que permita a gestão eficien
 • Server Actions + Cookies — Login e persistência de sessão utilizando cookies HTTP-only no Next.js.
 
 
-# Passo a Passo – Subindo o Backend e o Banco de
-Dados
+
+# Passo a Passo – Subindo o Backend e o Banco de Dados
+
+---
 
 ## 1. Pré-requisitos
 Antes de começar, verifique se cada notebook tem os seguintes programas instalados: - Git - Docker e Docker Compose - Java 17+ (para rodar o backend localmente) - (Opcional) IntelliJ ou VS Code.
