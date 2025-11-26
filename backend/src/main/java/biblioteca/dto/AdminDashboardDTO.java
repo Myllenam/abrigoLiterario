@@ -15,7 +15,6 @@ public class AdminDashboardDTO {
     private List<CategoryCountDTO> booksByCategory;
     private List<UpcomingReturnDTO> upcomingReturns;
 
-    // construtor completo
     public AdminDashboardDTO(
             long totalBooks,
             long borrowedBooks,

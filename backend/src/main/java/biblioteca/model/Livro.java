@@ -1,12 +1,15 @@
 package biblioteca.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-
-import java.util.List;
 
 @Entity
 public class Livro {
@@ -37,8 +40,7 @@ public class Livro {
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 
-    @OneToMany(mappedBy = "livro")
-    private List<Exemplar> exemplar;
+   
 
     public Long getId() {
         return id;
@@ -88,12 +90,5 @@ public class Livro {
         this.descricao = descricao;
     }
 
-    @JsonIgnore
-    public List<Exemplar> getExemplar() {
-        return exemplar;
-    }
-
-    public void setExemplar(List<Exemplar> exemplar) {
-        this.exemplar = exemplar;
-    }
+   
 }
