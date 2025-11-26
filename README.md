@@ -1,5 +1,52 @@
-# abrigoLiterario
-O Abrigo Literário é um sistema de gestão bibliotecária realizado em parceria com uma ong, que foi desenvolvido como uma API RESTful em Spring Boot. Sua finalidade principal é automatizar e otimizar todos os processos de uma biblioteca, desde o cadastro de acervo até o controle de usuários, proporcionando uma plataforma centralizada e eficiente para administração do patrimônio literário.
+# AbrigoLiterario
+O projeto **Abrigo Literário** consiste no desenvolvimento de uma aplicação web voltada ao gerenciamento de uma biblioteca virtual. A plataforma visa oferecer um ambiente acessível e intuitivo para o cadastro e a administração de livros, autores e categorias literárias, além de permitir a interação de leitores com o acervo digital.
+
+# Objetivo do Projeto
+O objetivo principal é criar um sistema funcional que permita a gestão eficiente do acervo literário e dos usuários da biblioteca. O sistema também busca promover o acesso à leitura, facilitando o contato entre leitores e o acervo disponível.
+
+# Tecnologias Utilizadas
+## Frontend
+• Next.js 15 — Framework React para construção de interfaces modernas com Server Components e Server Actions. • TypeScript — Tipagem estática garantindo maior segurança e escalabilidade. • Tailwind CSS — Framework CSS utilitário para estilização rápida e consistente. • Shadcn UI — Biblioteca de componentes acessíveis, tipados e altamente customizáveis. • React Hook Form — Gerenciamento de formulários com alta performance. • Zod — Validação de dados integrada aos formulários.
+
+## Backend
+• Java 17 — Linguagem backend principal com alta performance e maturidade. • Spring Boot 3 — Framework para construção da API REST, com validação, controllers e services. • Spring Data JPA — Simplificação do acesso ao banco de dados usando repositórios. • Hibernate — ORM utilizado para mapeamento objeto-relacional.
+
+## Banco de Dados
+• PostgreSQL — Banco de dados relacional utilizado para armazenar usuários, livros, empréstimos, categorias e autores.
+
+## Infraestrutura
+• Docker — Contêinerização do PostgreSQL para garantir reprodutibilidade do ambiente. • Docker Compose — Orquestração do serviço de banco de dados.
+
+## Autenticação
+• Server Actions + Cookies — Login e persistência de sessão utilizando cookies HTTP-only no Next.js.
+
+
+# Passo a Passo – Subindo o Backend e o Banco de
+Dados
+
+## 1. Pré-requisitos
+Antes de começar, verifique se cada notebook tem os seguintes programas instalados: - Git - Docker e Docker Compose - Java 17+ (para rodar o backend localmente) - (Opcional) IntelliJ ou VS Code.
+
+## 2. Clonar o projeto
+Abra o terminal e execute os comandos abaixo: git clone cd ~/Documentos/abrigoLiterario/backend
+
+## 3. Subir apenas o banco de dados (PostgreSQL) com Docker
+Execute no terminal: docker compose up -d postgres Para verificar se o container subiu: docker compose ps docker compose logs -f postgres O Postgres será executado na porta 5433 (configurada no docker-compose.yaml).
+
+## 4. Testar a conexão com o banco
+psql -h 127.0.0.1 -p 5433 -U postgres -d abrigoliterario -c "\l" Senha: admin
+
+## 5. Executar o backend localmente
+Se estiver usando Maven: ./mvnw spring-boot:run -Dspring-boot.run.main-class=biblioteca.AbrigoLiterarioApplication Se estiver usando Gradle: ./gradlew bootRun -Dspring-boot.run.main-class=biblioteca.AbrigoLiterarioApplication
+
+## 6. Verificar se o backend está rodando
+Abra o navegador ou use o curl: http://localhost:8080 ou curl -i http://localhost:8080/actuator/health
+
+## 7. Parar e remover containers
+Para parar e remover o banco de dados: docker compose down Para apagar tudo, incluindo os dados: docker compose down -v
+
+## 8. Rodar tudo com Docker (opcional)
+Caso queira rodar o backend e o banco de dados no Docker Compose, adicione o serviço 'app' no docker-compose.yaml e um Dockerfile
 
 # Especificação de Requisitos da Aplicação
 
